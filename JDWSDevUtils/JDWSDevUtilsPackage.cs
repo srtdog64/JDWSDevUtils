@@ -52,6 +52,7 @@ namespace JDWSDevUtils
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             await JDWFolderOpenCommand.InitializeAsync(this);
             await JDWCopyScriptsToClipboardCommand.InitializeAsync(this);
+            await JDWCopyScriptCommand.InitializeAsync(this);
         }
 
         #endregion

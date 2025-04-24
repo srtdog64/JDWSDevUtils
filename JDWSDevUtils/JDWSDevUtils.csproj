@@ -49,8 +49,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Commands\JDWFoderSciptCopyScriptsToClipboardCommand.cs" />
-    <Compile Include="Commands\JDWFolderOpenCommand.cs" />
+    <Compile Include="Commands\Scripts\JDWCopyScriptCommand.cs" />
+    <Compile Include="Commands\Folder\JDWFoderSciptCopyScriptsToClipboardCommand.cs" />
+    <Compile Include="Commands\Folder\JDWFolderOpenCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="JDWSDevUtilsPackage.cs" />
     <Compile Include="Language\Resource.Designer.cs">

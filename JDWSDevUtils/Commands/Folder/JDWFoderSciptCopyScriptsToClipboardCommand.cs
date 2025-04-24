@@ -150,7 +150,9 @@ namespace JDWSDevUtils.Commands
                 {
                     try
                     {
-                        string fileContent = File.ReadAllText(filePath);
+                        //string fileContent = File.ReadAllText(filePath);
+                        // 파일을 읽을 때 UTF-8 인코딩을 명시적으로 지정
+                        string fileContent = File.ReadAllText(filePath, System.Text.Encoding.UTF8);
                         string fileName = Path.GetFileName(filePath);
 
                         // Add separator with filename

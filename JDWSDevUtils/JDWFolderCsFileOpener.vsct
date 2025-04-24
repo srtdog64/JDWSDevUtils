@@ -1,19 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable">
 
-	<!-- 1) Visual Studio 내부 명령 참조 -->
+	<!-- [1] 외부 명령 참조 -->
 	<Extern href="stdidcmd.h" />
 	<Extern href="vsshlids.h" />
 
-	<!-- 2) GUID 및 ID 정의 -->
+	<!-- [2] GUID 및 ID 정의 -->
 	<Symbols>
 		<GuidSymbol name="guidDevUtilsPackage" value="{8633843e-4e34-4da7-abea-f70099dd00ca}">
+			<!-- 그룹 ID -->
 			<IDSymbol name="DevUtilsGroupScripts" value="0x1020" />
 			<IDSymbol name="DevUtilsGroupClipboard" value="0x1040" />
+			<IDSymbol name="DevUtilsGroupItem" value="0x1300" />
+
+			<!-- 커맨드 ID -->
 			<IDSymbol name="cmdOpenScripts" value="0x0100" />
 			<IDSymbol name="cmdCopyToClipboard" value="0x0101" />
+			<IDSymbol name="cmdCopySingleScript" value="0x0200" />
 		</GuidSymbol>
 
+		<!-- 비트맵 GUID 정의 -->
 		<GuidSymbol name="guidImages" value="{77280A7B-1A9A-425B-A1DC-DCA3B81A4DC0}">
 			<IDSymbol name="bmpOpenFolder1" value="1" />
 		</GuidSymbol>
@@ -23,27 +29,39 @@
 		</GuidSymbol>
 	</Symbols>
 
-	<!-- 3) 커맨드 선언 -->
+	<!-- [3] 명령 선언 -->
 	<Commands package="guidDevUtilsPackage">
 
-		<!-- 3-1) 비트맵 파일 등록 -->
+		<!-- [3-1] 비트맵 선언 -->
 		<Bitmaps>
 			<Bitmap guid="guidImages" href="Images\bulkedit.bmp" usedList="bmpOpenFolder1" />
 			<Bitmap guid="guidClipboardImages" href="Images\clipboardicon.bmp" usedList="bmpCopyClipboard" />
 		</Bitmaps>
 
-		<!-- 3-2) 그룹 정의 -->
+		<!-- ──────────────────────────────── -->
+		<!-- [3-2] 폴더 우클릭용 그룹 -->
+		<!-- ──────────────────────────────── -->
 		<Groups>
 			<Group guid="guidDevUtilsPackage" id="DevUtilsGroupScripts" priority="0x1000">
 				<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE" />
 			</Group>
-			<Group guid="guidDevUtilsPackage" id="DevUtilsGroupClipboard" priority="0x1000">
+			<Group guid="guidDevUtilsPackage" id="DevUtilsGroupClipboard" priority="0x1001">
 				<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE" />
+			</Group>
+
+			<!-- ──────────────────────────────── -->
+			<!-- [3-3] 단일 파일 우클릭용 그룹 -->
+			<!-- ──────────────────────────────── -->
+			<Group guid="guidDevUtilsPackage" id="DevUtilsGroupItem" priority="0x0700">
+				<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />
 			</Group>
 		</Groups>
 
-		<!-- 3-3) 버튼 정의 -->
+		<!-- ──────────────────────────────── -->
+		<!-- [4] 버튼 (커맨드) 정의 -->
+		<!-- ──────────────────────────────── -->
 		<Buttons>
+			<!--  [폴더 기능 1] 스크립트 일괄 열기 -->
 			<Button guid="guidDevUtilsPackage" id="cmdOpenScripts" priority="0x0000" type="Button">
 				<Parent guid="guidDevUtilsPackage" id="DevUtilsGroupScripts" />
 				<Icon guid="guidImages" id="bmpOpenFolder1" />
@@ -53,12 +71,23 @@
 				</Strings>
 			</Button>
 
+			<!--  [폴더 기능 2] 스크립트 일괄 클립보드 복사 -->
 			<Button guid="guidDevUtilsPackage" id="cmdCopyToClipboard" priority="0x0000" type="Button">
 				<Parent guid="guidDevUtilsPackage" id="DevUtilsGroupClipboard" />
 				<Icon guid="guidClipboardImages" id="bmpCopyClipboard" />
 				<Strings>
-					<ButtonText>[DevUtils] Copy to Clipboard</ButtonText>
+					<ButtonText>[DevUtils] Copy All Folder Scripts to Clipboard</ButtonText>
 					<ToolTipText>Copies all script contents to clipboard</ToolTipText>
+				</Strings>
+			</Button>
+
+			<!-- [단일 스크립트 기능] 스크립트 복사 -->
+			<Button guid="guidDevUtilsPackage" id="cmdCopySingleScript" priority="0x0000" type="Button">
+				<Parent guid="guidDevUtilsPackage" id="DevUtilsGroupItem" />
+				<Icon guid="guidClipboardImages" id="bmpCopyClipboard" />
+				<Strings>
+					<ButtonText>[DevUtils] Copy Script Content</ButtonText>
+					<ToolTipText>Copies selected script content to clipboard</ToolTipText>
 				</Strings>
 			</Button>
 		</Buttons>
