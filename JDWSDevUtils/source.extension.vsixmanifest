@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" ?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="JDW'SDevUtils.45d0a6da-071e-42f7-9012-2995c17e130b" Version="1.0" Language="en-US" Publisher="동우 정" />
+        <Identity Id="JDWSDevUtils.45d0a6da-071e-42f7-9012-2995c17e130b" Version="1.0" Language="en-US" Publisher="동우 정" />
         <DisplayName>JDW'SDevUtils</DisplayName>
         <Description xml:space="preserve">JDW'SDevUtils</Description>
         <Icon>Images\bulkedit.bmp</Icon>

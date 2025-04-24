@@ -14,7 +14,7 @@ using System.Diagnostics;
 using System.IO; 
 
 
-namespace JDWSDevUtils
+namespace JDWSDevUtils.Commands
 {
     internal sealed class JDWFolderOpenCommand
     {

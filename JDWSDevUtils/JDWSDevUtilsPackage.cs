@@ -6,6 +6,7 @@ using System.Threading;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
+using JDWSDevUtils.Commands;
 
 namespace JDWSDevUtils
 {
@@ -27,9 +28,10 @@ namespace JDWSDevUtils
     /// </para>
     /// </remarks>
     [PackageRegistration(UseManagedResourcesOnly = true, AllowsBackgroundLoading = true)]
-    [Guid(JDWFolderCsFileOpenerPackage.PackageGuidString)]
+    [Guid(JDWSDevUtilsPackage.PackageGuidString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    public sealed class JDWFolderCsFileOpenerPackage : AsyncPackage
+
+    public sealed class JDWSDevUtilsPackage : AsyncPackage
     {
          /// <summary>
         /// JDWFolderCsFileOpenerPackage GUID string.
@@ -47,25 +49,9 @@ namespace JDWSDevUtils
         /// <returns>A task representing the async work of package initialization, or an already completed task if there is none. Do not return null from this method.</returns>
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
-            string logPath = Path.Combine(
-       Environment.GetFolderPath(Environment.SpecialFolder.Desktop), // 일단 바탕화면
-       "JDW_LanguageLog.txt");
-
-            string logMessage = $"[{DateTime.Now:HH:mm:ss}] UICulture = {CultureInfo.CurrentUICulture}, Culture = {CultureInfo.CurrentCulture}";
-
-            try
-            {
-                File.AppendAllText(logPath, logMessage + Environment.NewLine);
-            }
-            catch (Exception ex)
-            {
-                // 이건 정말 드물지만, 권한 문제 같은 거 생길 수 있으니 방어
-                System.Diagnostics.Debug.WriteLine($"[FileLogError] {ex.Message}");
-            }
             await this.JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
-            JDWFolderOpenCommand.InitializeAsync(this);
-
-
+            await JDWFolderOpenCommand.InitializeAsync(this);
+            await JDWCopyScriptsToClipboardCommand.InitializeAsync(this);
         }
 
         #endregion

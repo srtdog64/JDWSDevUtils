@@ -1,43 +1,64 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable">
 
-	<!-- 1) 외부 참조 -->
+	<!-- 1) Visual Studio 내부 명령 참조 -->
 	<Extern href="stdidcmd.h" />
 	<Extern href="vsshlids.h" />
 
-	<!-- 2) GUID/ID 정의 -->
+	<!-- 2) GUID 및 ID 정의 -->
 	<Symbols>
-		<GuidSymbol name="guidFolderCsFileOpenerPackage" value="{8633843e-4e34-4da7-abea-f70099dd00ca}">
-			<IDSymbol name="MyMenuGroup"        value="0x1020" />
-			<IDSymbol name="FolderOpenCommandId" value="0x0100" />
+		<GuidSymbol name="guidDevUtilsPackage" value="{8633843e-4e34-4da7-abea-f70099dd00ca}">
+			<IDSymbol name="DevUtilsGroupScripts" value="0x1020" />
+			<IDSymbol name="DevUtilsGroupClipboard" value="0x1040" />
+			<IDSymbol name="cmdOpenScripts" value="0x0100" />
+			<IDSymbol name="cmdCopyToClipboard" value="0x0101" />
 		</GuidSymbol>
+
 		<GuidSymbol name="guidImages" value="{77280A7B-1A9A-425B-A1DC-DCA3B81A4DC0}">
 			<IDSymbol name="bmpOpenFolder1" value="1" />
 		</GuidSymbol>
+
+		<GuidSymbol name="guidClipboardImages" value="{A17859D3-4284-45CF-8FB5-EE9204D0012A}">
+			<IDSymbol name="bmpCopyClipboard" value="1" />
+		</GuidSymbol>
 	</Symbols>
 
-	<!-- 3) Commands: Bitmaps → Groups → Buttons -->
-	<Commands package="guidFolderCsFileOpenerPackage">
+	<!-- 3) 커맨드 선언 -->
+	<Commands package="guidDevUtilsPackage">
+
+		<!-- 3-1) 비트맵 파일 등록 -->
 		<Bitmaps>
 			<Bitmap guid="guidImages" href="Images\bulkedit.bmp" usedList="bmpOpenFolder1" />
+			<Bitmap guid="guidClipboardImages" href="Images\clipboardicon.bmp" usedList="bmpCopyClipboard" />
 		</Bitmaps>
 
+		<!-- 3-2) 그룹 정의 -->
 		<Groups>
-			<Group guid="guidFolderCsFileOpenerPackage" id="MyMenuGroup" priority="0x0600">
+			<Group guid="guidDevUtilsPackage" id="DevUtilsGroupScripts" priority="0x1000">
+				<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE" />
+			</Group>
+			<Group guid="guidDevUtilsPackage" id="DevUtilsGroupClipboard" priority="0x1000">
 				<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE" />
 			</Group>
 		</Groups>
 
+		<!-- 3-3) 버튼 정의 -->
 		<Buttons>
-			<Button guid="guidFolderCsFileOpenerPackage"
-					id="FolderOpenCommandId"
-					priority="0x0100" type="Button">
-				<Parent guid="guidFolderCsFileOpenerPackage" id="MyMenuGroup" />
+			<Button guid="guidDevUtilsPackage" id="cmdOpenScripts" priority="0x0000" type="Button">
+				<Parent guid="guidDevUtilsPackage" id="DevUtilsGroupScripts" />
 				<Icon guid="guidImages" id="bmpOpenFolder1" />
-
 				<Strings>
-					<ButtonText>Open All .cs in Folder</ButtonText>
-					<ToolTipText>Opens all .cs files in this folder</ToolTipText>
+					<ButtonText>[DevUtils] Open All Scripts in Folder</ButtonText>
+					<ToolTipText>Opens all .cs files in the selected folder</ToolTipText>
+				</Strings>
+			</Button>
+
+			<Button guid="guidDevUtilsPackage" id="cmdCopyToClipboard" priority="0x0000" type="Button">
+				<Parent guid="guidDevUtilsPackage" id="DevUtilsGroupClipboard" />
+				<Icon guid="guidClipboardImages" id="bmpCopyClipboard" />
+				<Strings>
+					<ButtonText>[DevUtils] Copy to Clipboard</ButtonText>
+					<ToolTipText>Copies all script contents to clipboard</ToolTipText>
 				</Strings>
 			</Button>
 		</Buttons>
