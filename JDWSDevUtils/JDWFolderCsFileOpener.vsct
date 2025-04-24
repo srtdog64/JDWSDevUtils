@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CommandTable xmlns="http://schemas.microsoft.com/VisualStudio/2005-10-18/CommandTable">
+
+	<!-- 1) 외부 참조 -->
+	<Extern href="stdidcmd.h" />
+	<Extern href="vsshlids.h" />
+
+	<!-- 2) GUID/ID 정의 -->
+	<Symbols>
+		<GuidSymbol name="guidFolderCsFileOpenerPackage" value="{8633843e-4e34-4da7-abea-f70099dd00ca}">
+			<IDSymbol name="MyMenuGroup"        value="0x1020" />
+			<IDSymbol name="FolderOpenCommandId" value="0x0100" />
+		</GuidSymbol>
+		<GuidSymbol name="guidImages" value="{77280A7B-1A9A-425B-A1DC-DCA3B81A4DC0}">
+			<IDSymbol name="bmpOpenFolder1" value="1" />
+		</GuidSymbol>
+	</Symbols>
+
+	<!-- 3) Commands: Bitmaps → Groups → Buttons -->
+	<Commands package="guidFolderCsFileOpenerPackage">
+		<Bitmaps>
+			<Bitmap guid="guidImages" href="Images\bulkedit.bmp" usedList="bmpOpenFolder1" />
+		</Bitmaps>
+
+		<Groups>
+			<Group guid="guidFolderCsFileOpenerPackage" id="MyMenuGroup" priority="0x0600">
+				<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE" />
+			</Group>
+		</Groups>
+
+		<Buttons>
+			<Button guid="guidFolderCsFileOpenerPackage"
+					id="FolderOpenCommandId"
+					priority="0x0100" type="Button">
+				<Parent guid="guidFolderCsFileOpenerPackage" id="MyMenuGroup" />
+				<Icon guid="guidImages" id="bmpOpenFolder1" />
+
+				<Strings>
+					<ButtonText>Open All .cs in Folder</ButtonText>
+					<ToolTipText>Opens all .cs files in this folder</ToolTipText>
+				</Strings>
+			</Button>
+		</Buttons>
+	</Commands>
+</CommandTable>
