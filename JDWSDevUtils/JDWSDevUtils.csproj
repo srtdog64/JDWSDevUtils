@@ -84,7 +84,7 @@
     <Reference Include="System.Design" />
   </ItemGroup>
   <ItemGroup>
-    <VSCTCompile Include="JDWFolderCsFileOpener.vsct">
+    <VSCTCompile Include="JDWSDevUtils.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
   </ItemGroup>
