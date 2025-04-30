@@ -53,6 +53,7 @@ namespace JDWSDevUtils
             await JDWFolderOpenCommand.InitializeAsync(this);
             await JDWCopyScriptsToClipboardCommand.InitializeAsync(this);
             await JDWCopyScriptCommand.InitializeAsync(this);
+            await JDWConvertVarCommand.InitializeAsync(this);
         }
 
         #endregion

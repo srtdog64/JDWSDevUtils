@@ -12,11 +12,13 @@
 			<IDSymbol name="DevUtilsGroupScripts" value="0x1020" />
 			<IDSymbol name="DevUtilsGroupClipboard" value="0x1040" />
 			<IDSymbol name="DevUtilsGroupItem" value="0x1300" />
+			<IDSymbol name="DevUtilsGroupTextEditor" value="0x1600" />
 
 			<!-- 커맨드 ID -->
 			<IDSymbol name="cmdOpenScripts" value="0x0100" />
 			<IDSymbol name="cmdCopyToClipboard" value="0x0101" />
 			<IDSymbol name="cmdCopySingleScript" value="0x0200" />
+			<IDSymbol name="cmdConvertVarExplicit" value="0x0300" />
 		</GuidSymbol>
 
 		<!-- 비트맵 GUID 정의 -->
@@ -27,6 +29,10 @@
 		<GuidSymbol name="guidClipboardImages" value="{A17859D3-4284-45CF-8FB5-EE9204D0012A}">
 			<IDSymbol name="bmpCopyClipboard" value="1" />
 		</GuidSymbol>
+
+		<GuidSymbol name="guidVarReplaceImages" value="{17F975F7-1F7A-4A9E-8743-2AE004846BD2}">
+			<IDSymbol name="bmpVarReplace" value="1" />
+		</GuidSymbol>
 	</Symbols>
 
 	<!-- [3] 명령 선언 -->
@@ -36,11 +42,11 @@
 		<Bitmaps>
 			<Bitmap guid="guidImages" href="Images\bulkedit.bmp" usedList="bmpOpenFolder1" />
 			<Bitmap guid="guidClipboardImages" href="Images\clipboardicon.bmp" usedList="bmpCopyClipboard" />
+			<Bitmap guid="guidVarReplaceImages" href="Images\varReplace.bmp" usedList="bmpVarReplace" />
+
 		</Bitmaps>
 
-		<!-- ──────────────────────────────── -->
 		<!-- [3-2] 폴더 우클릭용 그룹 -->
-		<!-- ──────────────────────────────── -->
 		<Groups>
 			<Group guid="guidDevUtilsPackage" id="DevUtilsGroupScripts" priority="0x1000">
 				<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE" />
@@ -49,19 +55,20 @@
 				<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE" />
 			</Group>
 
-			<!-- ──────────────────────────────── -->
 			<!-- [3-3] 단일 파일 우클릭용 그룹 -->
-			<!-- ──────────────────────────────── -->
-			<Group guid="guidDevUtilsPackage" id="DevUtilsGroupItem" priority="0x0700">
+			<Group guid="guidDevUtilsPackage" id="DevUtilsGroupItem" priority="0x1300">
 				<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE" />
+			</Group>
+
+			<!-- [3-4] 코드 에디터 내 활성 문서 기준 명령 -->
+			<Group guid="guidDevUtilsPackage" id="DevUtilsGroupTextEditor" priority="0x1600">
+				<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN" />
 			</Group>
 		</Groups>
 
-		<!-- ──────────────────────────────── -->
 		<!-- [4] 버튼 (커맨드) 정의 -->
-		<!-- ──────────────────────────────── -->
 		<Buttons>
-			<!--  [폴더 기능 1] 스크립트 일괄 열기 -->
+			<!-- [폴더 기능 1] 스크립트 일괄 열기 -->
 			<Button guid="guidDevUtilsPackage" id="cmdOpenScripts" priority="0x0000" type="Button">
 				<Parent guid="guidDevUtilsPackage" id="DevUtilsGroupScripts" />
 				<Icon guid="guidImages" id="bmpOpenFolder1" />
@@ -71,7 +78,7 @@
 				</Strings>
 			</Button>
 
-			<!--  [폴더 기능 2] 스크립트 일괄 클립보드 복사 -->
+			<!-- [폴더 기능 2] 스크립트 일괄 클립보드 복사 -->
 			<Button guid="guidDevUtilsPackage" id="cmdCopyToClipboard" priority="0x0000" type="Button">
 				<Parent guid="guidDevUtilsPackage" id="DevUtilsGroupClipboard" />
 				<Icon guid="guidClipboardImages" id="bmpCopyClipboard" />
@@ -88,6 +95,16 @@
 				<Strings>
 					<ButtonText>[DevUtils] Copy Script Content</ButtonText>
 					<ToolTipText>Copies selected script content to clipboard</ToolTipText>
+				</Strings>
+			</Button>
+
+			<!-- [코드 창 전용] var 명시적 타입으로 변환 -->
+			<Button guid="guidDevUtilsPackage" id="cmdConvertVarExplicit" priority="0x0010" type="Button">
+				<Parent guid="guidDevUtilsPackage" id="DevUtilsGroupTextEditor" />
+				<Icon guid="guidVarReplaceImages" id="bmpVarReplace" />
+				<Strings>
+					<ButtonText>[DevUtils] Convert 'var' to Explicit Types</ButtonText>
+					<ToolTipText>Replaces all 'var' with explicit types in current C# editor window</ToolTipText>
 				</Strings>
 			</Button>
 		</Buttons>
