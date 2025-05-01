@@ -163,7 +163,7 @@ namespace JDWSDevUtils.Commands
                         TypeSyntax varTypeNode = decl.Type;
                         ITypeSymbol? inferredType = semanticModel.GetTypeInfo(varTypeNode).ConvertedType;
 
-                        // 변환 제외 조건: null, 오류 타입, 익명 타입, 또는 여전히 "var"인 경우
+                        // 변환 제외 조건: null, 오류 타입, 익명 타입, 또는 여전히 "var"인 경우, 익명타입은 절대 명시적 타입으로 바뀌지 않고, 그대로 var로 남는다.
                         if (inferredType == null || inferredType.TypeKind == TypeKind.Error || inferredType.IsAnonymousType || inferredType.ToDisplayString() == "var")
                         {
                             continue;
