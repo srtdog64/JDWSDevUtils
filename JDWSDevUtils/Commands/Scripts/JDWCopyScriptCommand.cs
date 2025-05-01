@@ -1,4 +1,4 @@
-﻿using EnvDTE; // DTE 사용 위해 필요
+using EnvDTE; // DTE 사용 위해 필요
 using EnvDTE80; // DTE2 사용 위해 필요
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -26,8 +26,8 @@ namespace JDWSDevUtils.Commands
             this.package = package ?? throw new ArgumentNullException(nameof(package));
             commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
 
-            var menuCommandID = new CommandID(CommandSet, CommandId);
-            var menuItem = new MenuCommand(this.Execute, menuCommandID);
+            CommandID menuCommandID = new CommandID(CommandSet, CommandId);
+            MenuCommand menuItem = new MenuCommand(this.Execute, menuCommandID);
             commandService.AddCommand(menuItem);
         }
 
@@ -55,7 +55,7 @@ namespace JDWSDevUtils.Commands
             ThreadHelper.ThrowIfNotOnUIThread(); // UI 스레드 확인
 
             // --- 1. DTE 서비스 가져오기 ---
-            var dte = (this.package as IServiceProvider)?.GetService(typeof(SDTE)) as DTE2;
+            DTE2 dte = (this.package as IServiceProvider)?.GetService(typeof(SDTE)) as DTE2;
             if (dte == null)
             {
                 VsShellUtilities.ShowMessageBox(this.package, "Cannot get DTE service.", "Error", OLEMSGICON.OLEMSGICON_CRITICAL, OLEMSGBUTTON.OLEMSGBUTTON_OK, OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
@@ -64,7 +64,7 @@ namespace JDWSDevUtils.Commands
 
             // --- 2. 선택된 항목들 가져오기 ---
             UIHierarchy solutionExplorer = dte.ToolWindows.SolutionExplorer;
-            var selectedItems = (Array)solutionExplorer.SelectedItems;
+            Array selectedItems = (Array)solutionExplorer.SelectedItems;
             if (selectedItems == null || selectedItems.Length == 0)
             {
                 // 선택된 항목이 없으면 아무것도 하지 않음

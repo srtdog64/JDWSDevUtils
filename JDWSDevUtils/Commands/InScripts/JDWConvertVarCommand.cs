@@ -77,13 +77,13 @@ namespace JDWSDevUtils.Commands
         /// <summary>'var' 변환 비동기 작업</summary>
         private async Task ExecuteAsync(object sender, EventArgs e)
         {
-            var stopwatch = Stopwatch.StartNew(); // 성능 측정 시작
+            Stopwatch stopwatch = Stopwatch.StartNew(); // 성능 측정 시작
             long elapsedWorkspace = 0, elapsedAnalysis = 0, elapsedSimplify = 0; // 단계별 시간 측정 변수
 
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync(); // UI 스레드 시작
 
             // DTE 서비스 가져오기
-            var dte = await ServiceProvider.GetServiceAsync(typeof(SDTE)) as DTE2;
+            DTE2 dte = await ServiceProvider.GetServiceAsync(typeof(SDTE)) as DTE2;
             if (dte == null)
             {
                 ShowMessageBox("Error", "Visual Studio DTE service is not available.", OLEMSGICON.OLEMSGICON_CRITICAL);
@@ -138,24 +138,25 @@ namespace JDWSDevUtils.Commands
                     workspace.WorkspaceFailed += (o, args) => { Debug.WriteLine($"Roslyn Workspace loading failed: {args.Diagnostic}"); };
 
                     // 프로젝트 로딩 (시간 소요 지점 1)
-                    var loadedProject = await workspace.OpenProjectAsync(projectPath);
+                    RoslynProject loadedProject = await workspace.OpenProjectAsync(projectPath);
                     elapsedWorkspace = stopwatch.ElapsedMilliseconds;
 
                     // Roslyn 문서 객체 가져오기
-                    var documentId = workspace.CurrentSolution.GetDocumentIdsWithFilePath(filePath).FirstOrDefault();
+                    DocumentId documentId = workspace.CurrentSolution.GetDocumentIdsWithFilePath(filePath).FirstOrDefault();
                     if (documentId == null) { ShowMessageBox("Error", "Could not find the document in the Roslyn workspace.", OLEMSGICON.OLEMSGICON_CRITICAL); return; }
                     RoslynDocument document = workspace.CurrentSolution.GetDocument(documentId);
                     if (document == null) { ShowMessageBox("Error", "Failed to get the document object from the workspace.", OLEMSGICON.OLEMSGICON_CRITICAL); return; }
 
                     // --- 분석 단계 ---
                     // 시맨틱 모델 및 구문 트리 얻기 (시간 소요 지점 2)
-                    var semanticModel = await document.GetSemanticModelAsync();
-                    var syntaxRoot = await document.GetSyntaxRootAsync();
+                    SemanticModel semanticModel = await document.GetSemanticModelAsync();
+                    SyntaxNode syntaxRoot = await document.GetSyntaxRootAsync();
                     if (semanticModel == null || syntaxRoot == null) { ShowMessageBox("Error", "Could not get semantic model or syntax root.", OLEMSGICON.OLEMSGICON_CRITICAL); return; }
                     elapsedAnalysis = stopwatch.ElapsedMilliseconds - elapsedWorkspace;
 
                     // 'var' 선언 찾기 및 변환 목록 생성
-                    var nodesToReplace = new Dictionary<SyntaxNode, SyntaxNode>();
+                    Dictionary<SyntaxNode, SyntaxNode> nodesToReplace = new Dictionary<SyntaxNode, SyntaxNode>(); 
+                    //LINQ 쿼리 결과 타입은 장황해서 var가 일반적
                     var varDeclarations = syntaxRoot.DescendantNodes().OfType<VariableDeclarationSyntax>().Where(vds => vds.Type.IsVar);
 
                     foreach (var decl in varDeclarations)
